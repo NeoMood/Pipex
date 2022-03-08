@@ -1,44 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   pipex_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sgmira <sgmira@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 19:50:15 by sgmira            #+#    #+#             */
-/*   Updated: 2022/02/13 20:02:01 by sgmira           ###   ########.fr       */
+/*   Updated: 2022/03/07 18:33:32 by sgmira           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "pipex_bonus.h"
 
-void	processing_cmd1(t_vars *vars, int *fd)
+void	processing_firstcmd(t_vars *vars, int *fd)
 {
 	dup2(vars->f1, STDIN_FILENO);
 	close(fd[0]);
 	dup2(fd[1], STDOUT_FILENO);
-	close(fd[1]);
-	if (execve(vars->path1, vars->cmd1, vars->env) == -1)
+	if (execve(vars->path, vars->cmd, vars->env) == -1)
 		get_error2();
 	exit(EXIT_FAILURE);
 }
 
-void	processing_cmd2(t_vars *vars, int *fd)
+void	processing_mdlcmd(t_vars *vars, int *fd)
+{
+	close(fd[0]);
+	dup2(fd[1], STDOUT_FILENO);
+	if (execve(vars->path, vars->cmd, vars->env) == -1)
+		get_error2();
+	exit(EXIT_FAILURE);
+}
+
+void	processing_lastcmd(t_vars *vars)
 {
 	dup2(vars->f2, STDOUT_FILENO);
-	close(fd[1]);
-	dup2(fd[0], STDIN_FILENO);
-	close(fd[0]);
-	if (execve(vars->path2, vars->cmd2, vars->env) == -1)
+	if (execve(vars->path, vars->cmd, vars->env) == -1)
 		get_error2();
 	exit(EXIT_FAILURE);
 }
 
-int	pipex(t_vars *vars)
+int	pipex(t_vars *vars, int *fd)
 {
-	int	fd[2];
 	int	pid1;
-	int	pid2;
 
 	if (pipe(fd) == -1)
 		return (get_error("pipe"));
@@ -46,13 +49,15 @@ int	pipex(t_vars *vars)
 	if (pid1 < 0)
 		return (get_error("pipe"));
 	if (pid1 == 0)
-		processing_cmd1(vars, fd);
-	pid2 = fork();
-	if (pid2 < 0)
-		return (get_error("pipe"));
-	if (pid2 == 0)
-		processing_cmd2(vars, fd);
-	close(fd[0]);
+	{
+		if (vars->a == 2)
+			processing_firstcmd(vars, fd);
+		else if (vars->aca == 1)
+			processing_lastcmd(vars);
+		else
+			processing_mdlcmd(vars, fd);
+	}
 	close(fd[1]);
+	dup2(fd[0], STDIN_FILENO);
 	return (0);
 }

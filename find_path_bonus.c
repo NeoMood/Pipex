@@ -1,36 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_error.c                                        :+:      :+:    :+:   */
+/*   find_path_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sgmira <sgmira@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/14 20:10:22 by sgmira            #+#    #+#             */
-/*   Updated: 2022/02/08 18:07:32 by sgmira           ###   ########.fr       */
+/*   Created: 2022/01/11 16:05:25 by sgmira            #+#    #+#             */
+/*   Updated: 2022/02/27 19:22:28 by sgmira           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "pipex_bonus.h"
 
-int	get_error(char *s)
+char	*find_path(char **str)
 {
-	int	i;
+	int		i;
+	int		j;
+	int		x;
+	char	*to_find;
 
+	to_find = "PATH";
 	i = 0;
-	if (!s)
+	while (str[i])
 	{
-		write(2, "invalid command!\n", 18);
-		return (1);
-	}
-	else
-	{
-		while (s[i])
+		j = 0;
+		x = 0;
+		while (to_find[j] == str[i][x])
 		{
-			write(1, &s[i], 1);
-			i++;
+			if (str[i][j + 1] == '=')
+			{
+				return (&str[i][x + 2]);
+			}
+			j++;
+			x++;
 		}
-		write(2, ": Command not found\n", 20);
-		return (1);
+		i++;
 	}
-	return (1);
+	return (0);
 }

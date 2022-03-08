@@ -6,7 +6,7 @@
 /*   By: sgmira <sgmira@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 17:19:28 by sgmira            #+#    #+#             */
-/*   Updated: 2022/01/20 15:55:48 by sgmira           ###   ########.fr       */
+/*   Updated: 2022/02/08 18:07:41 by sgmira           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,5 @@ char	*get_path(char	**paths, char	**cmd)
 		i++;
 	}
 	get_error(cmd[0]);
-	return(0);
+	return (0);
 }

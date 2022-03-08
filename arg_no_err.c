@@ -6,7 +6,7 @@
 /*   By: sgmira <sgmira@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 17:07:41 by sgmira            #+#    #+#             */
-/*   Updated: 2022/01/20 18:45:25 by sgmira           ###   ########.fr       */
+/*   Updated: 2022/02/07 15:30:51 by sgmira           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int	arg_no_err(void)
 {
-	// write(1, "error: Invalid number of arguments\n", 36);
-	puts("error: Invalid number of arguments\n");
+	write(2, "error: Invalid number of arguments\n", 36);
 	exit(1);
 }
